@@ -1,6 +1,7 @@
 # Environments
 .venv/
-input/*.*
-output/*.*
+input/*
+output/*
 *.log
+~$S*
 !*Sample*
