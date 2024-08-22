@@ -1,0 +1,21 @@
+{
+ "PLWAWP03SWA001": {
+			"IP": " 10.37.151.58",
+			"LOCATION":"MDF",
+		    "CMDS": {
+			    "sh_mac":{"CMD":"show mac address-table"},
+				"sh_cdp":{"CMD":"show cdp neighbors"},
+				"sh_int":{"CMD":"show interface status"}
+			        }
+			              },
+ "PLWAWP03SWC001": {
+			"IP": "10.37.151.57",
+			"LOCATION":"MDF",
+		    "CMDS": {
+			    "sh_mac":{"CMD":"show mac address-table"},
+			    "sh_arp":{"CMD":"show ip arp"},
+				"sh_cdp":{"CMD":"show cdp neighbors"},
+				"sh_int":{"CMD":"show interface status"}
+			        }
+			              }
+}
