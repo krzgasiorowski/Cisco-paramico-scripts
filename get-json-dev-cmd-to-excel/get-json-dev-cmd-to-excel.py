@@ -1,6 +1,8 @@
 import sys
 import pwinput
 from netmiko import ConnectHandler
+from netmiko import NetmikoAuthenticationException
+from netmiko import NetmikoTimeoutException
 import json
 import os
 import datetime
@@ -51,32 +53,40 @@ for itemdev in DEVCMDLIST.keys():
     }
     CMDS= DEVCMDLIST[itemdev]['CMDS']
     LOCATION=DEVCMDLIST[itemdev]['LOCATION']
+    ### start ssh sesion    
     print(DEV_ADDRESS," <-connecting") 
-    with ConnectHandler(**DEV) as sshCli:
-### geting one by one cmd ##########      
-      for itemcmd in CMDS.keys():
-        cmd_output =  sshCli.send_command(CMDS[itemcmd]['CMD'], use_textfsm=True)
-#        print(json.dumps(cmd_output, indent=4))
-        df=pd.json_normalize(cmd_output)
-        df['device'] = itemdev
-        df['location'] = LOCATION        
-        try:          
-            dfexisting=pd.read_excel(OUTPUT_FILE, sheet_name=itemcmd)
-            df = pd.concat([dfexisting, df])
-            print("appending date to tab "+itemcmd+" from "+itemdev)
-#               df=df.append(dfexisting, ignore_index=True,)
-        except:
-            print("creating tab "+itemcmd+" for "+itemdev)
-        
-        try:          
-            writer = pd.ExcelWriter(OUTPUT_FILE, engine = 'openpyxl',mode="a",if_sheet_exists="replace")
-        except:
-            writer = pd.ExcelWriter(OUTPUT_FILE, engine = 'openpyxl')
-        df.to_excel(writer, index=False, sheet_name=itemcmd)
-        writer.close()
-# print result in txt/json files
-#         save_output = open("Output-"+itemdev+"-"+itemcmd+"-"+time1+".json", "w+")
-#         save_output.write(json.dumps((cmd_output),indent=4))
-#         save_output.close()
-        
+    try:
+       with ConnectHandler(**DEV) as sshCli:    
+            ### geting one by one cmd ##########      
+            for itemcmd in CMDS.keys():
+                cmd_output =  sshCli.send_command(CMDS[itemcmd]['CMD'], use_textfsm=True)        
+                #print(json.dumps(cmd_output, indent=4))
+                df=pd.json_normalize(cmd_output)
+                df['device'] = itemdev
+                df['location'] = LOCATION        
+                try:          
+                    dfexisting=pd.read_excel(OUTPUT_FILE, sheet_name=itemcmd)
+                    df = pd.concat([dfexisting, df])
+                    print("appending date to tab "+itemcmd+" from "+itemdev)
+                #df=df.append(dfexisting, ignore_index=True,)
+                except:
+                    print("creating tab "+itemcmd+" for "+itemdev)
+                
+                try:          
+                    writer = pd.ExcelWriter(OUTPUT_FILE, engine = 'openpyxl',mode="a",if_sheet_exists="replace")
+                except:
+                    writer = pd.ExcelWriter(OUTPUT_FILE, engine = 'openpyxl')
+                df.to_excel(writer, index=False, sheet_name=itemcmd)
+                writer.close()
+                #print result in txt/json files
+                #save_output = open("Output-"+itemdev+"-"+itemcmd+"-"+time1+".json", "w+")
+                #save_output.write(json.dumps((cmd_output),indent=4))
+                #save_output.close()
+
+    except NetmikoAuthenticationException:
+        print(f"Authentication Failed on {itemdev}")
+        continue
+    except NetmikoTimeoutException:
+        print(f"Session timeout on {itemdev}")
+        continue     
 print ("*"*20 + " End " + "*" *20)
