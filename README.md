@@ -4,7 +4,7 @@ get-csv-dev-cmd-to-txt.py script execut the same list of commands on many device
 # Finding a device manufacturer by MAC address vendor
 get-MAC-vendor.py - scripts script creates new tab MAC_vendor in Excel with sheet name 'mac' and columne name 'mac_address'.
 
-# Endpoints inventory:
+# Endpoints inventory
 The following scripts collect endpoint's data from switches and other sources ( MACvendor, Infoblox). They create a flow where the next script is based on the data of the previous one
 The scripts work on excel file in directory ./output/
 
