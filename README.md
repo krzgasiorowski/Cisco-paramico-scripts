@@ -1,7 +1,7 @@
 # CiscoIOS-Automation
 get-csv-dev-cmd-to-txt.py script execut the same list of commands on many devices and allow filter results by words (eg.: Temperature, MAC, SN). The script read list of cmd and list of devices from csv file.
 
-# Collect Vendors info based on MAC Address 
+# Collecting info about Vendor of devices based on MAC address vendor list 
 get-MAC-vendor.py - scripts script creates new tab MAC_vendor in Excel with sheet name 'mac' and columne name 'mac_address'.
 
 # Endpoints inventory:
