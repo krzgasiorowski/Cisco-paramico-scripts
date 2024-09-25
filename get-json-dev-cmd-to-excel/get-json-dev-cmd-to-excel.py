@@ -9,6 +9,7 @@ import datetime
 import logging
 import pandas as pd
 import openpyxl
+import pprint
 time1 = (datetime.datetime.now()).strftime("%Y-%m-%d_%H-%M-%S")
 
 INPUT_FOLDER="./input/"
@@ -49,7 +50,8 @@ for itemdev in DEVCMDLIST.keys():
 	"ip" : DEV_ADDRESS,
 	"username" : DEV_USERNAME,
 	"password" : DEV_PASSWORD,
-    "port": DEV_PORT
+    "port": DEV_PORT,
+    "read_timeout_override": 100
     }
     CMDS= DEVCMDLIST[itemdev]['CMDS']
     LOCATION=DEVCMDLIST[itemdev]['LOCATION']
@@ -59,7 +61,9 @@ for itemdev in DEVCMDLIST.keys():
        with ConnectHandler(**DEV) as sshCli:    
             ### geting one by one cmd ##########      
             for itemcmd in CMDS.keys():
-                cmd_output =  sshCli.send_command(CMDS[itemcmd]['CMD'], use_textfsm=True)        
+                cmd_output =  sshCli.send_command(CMDS[itemcmd]['CMD'], use_textfsm=True) 
+                #cmd_output =  [ line for line in cmd_output.split('\n')]
+                #pprint.pp(cmd_output)
                 #print(json.dumps(cmd_output, indent=4))
                 df=pd.json_normalize(cmd_output)
                 df['device'] = itemdev

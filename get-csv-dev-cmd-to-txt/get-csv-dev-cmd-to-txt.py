@@ -76,6 +76,7 @@ with open(DEVLIST_FILE) as file:
       next(iterCMD)
       for itemcmd in iterCMD:  
          DEV_OUTPUT =  sshCli.send_command(itemcmd["CMD"])
+         pprint.pp(DEV_OUTPUT)
          DEV_OUTPUT_FILTERED=filter(DEV_OUTPUT, DEV_OUTPUTFILTER)
          DEV_OUTPUT_FILTERED =  [ line for line in DEV_OUTPUT.split('\n') if DEV_OUTPUTFILTER in line]
          pprint.pp(DEV_OUTPUT_FILTERED)

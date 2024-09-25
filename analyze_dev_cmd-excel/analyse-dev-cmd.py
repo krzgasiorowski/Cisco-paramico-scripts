@@ -7,11 +7,11 @@ import openpyxl
 from mac_vendor_lookup import MacLookup
 
 print("*"*9 + " Enter the excel file name with cmds results (with sheets:sh_mac, sh_arp, sh_int, sh_cdp)" + "*" *9)
-DATA_FILE=str(input("File name, or press ENTER for default[Output_summary-last.xlsx]:").strip() or "Output_summary-last.xlsx")
+DATA_FILE=str(input("File name, or press ENTER for default[./output/Output_summary-last.xlsx]:").strip() or "./output/Output_summary-last.xlsx")
 if os.path.isfile(DATA_FILE):
     pass
 else:  
-    print(f"No such file: {DATA_FILE} in current directory")
+    print(f"No such file: {DATA_FILE}")
     sys.exit()
 
 #print("update MAC vendor list...")
@@ -28,13 +28,14 @@ dfarp.rename(columns={'device':'device_arp'},inplace=True)
 dfarp.drop (['type','protocol',"interface","location",'age'], axis=1, inplace=True)
 
 dfint=pd.read_excel(DATA_FILE, sheet_name="sh_int")
+dfint.rename(columns={'name':'description'},inplace=True)
 dfint.drop (['fc_mode','status','location','type'], axis=1, inplace=True)
 
 dfcdp=pd.read_excel(DATA_FILE, sheet_name="sh_cdp")
 dfcdp.rename(columns={'local_interface':'port'},inplace=True)
-dfcdp['port'] = dfcdp['port'].apply(lambda x: ((((x.replace(" ","")).replace("Gig","Gi")).replace("Ten","Te")).replace("Two","Tw")))
-dfcdp.drop (['neighbor_interface',"location"], axis=1, inplace=True)
-print(dfcdp)
+dfcdp['port'] = dfcdp['port'].apply(lambda x: (((((x.replace(" ","")).replace("Gig","Gi")).replace("Ten","Te")).replace("Two","Tw")).replace("Fas","Fa")))
+dfcdp.drop (['neighbor_interface',"location","capability"], axis=1, inplace=True)
+#print(dfcdp)
 print ("merging MAC and ARP tables...")
 df = pd.merge(dfmac, dfarp, left_on=['mac_address'], right_on = ['mac_address'], how='left')
 
