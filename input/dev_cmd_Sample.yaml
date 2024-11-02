@@ -1,0 +1,56 @@
+DEVS:
+    SWA:
+        - {IP: 192.168.1.194, HOSTNAME: ALAMA01SWA001, LOCATION: ITC1}
+        - {IP: 192.168.1.195, HOSTNAME: ALAMA01SWA002, LOCATION: ITC2}
+        - {IP: 192.168.1.196, HOSTNAME: ALAMA01SWA003, LOCATION: ITC3}
+        - {IP: 192.168.1.197, HOSTNAME: ALAMA01SWA004, LOCATION: ITC4}
+        - {IP: 192.168.1.198, HOSTNAME: ALAMA01SWA005, LOCATION: ITC5}
+        - {IP: 192.168.1.199, HOSTNAME: ALAMA01SWA006, LOCATION: ITC6}
+    SWA-PART:
+        #- {IP: 192.168.1.194, HOSTNAME: ALAMA01SWA001, LOCATION: ITC1} 
+        - {IP: 192.168.1.195, HOSTNAME: ALAMA01SWA002, LOCATION: ITC2}
+        #- {IP: 192.168.1.196, HOSTNAME: ALAMA01SWA003, LOCATION: ITC3}
+        - {IP: 192.168.1.197, HOSTNAME: ALAMA01SWA004, LOCATION: ITC4}
+    TEST:
+        - {IP: 192.168.1.1, HOSTNAME: ALAMA01SWA000, LOCATION: ITC1}
+CMDS:
+    CMDSET1: #send list of commands in enable mode and getting result on the screen
+        - CMD: "show license summary | inc Virtual"
+          CMD-OUTPUT-DESCRIPTION: sh_lic
+          SAVE-CMD-OUTPUT-TO-FILE: false
+          CONFIG-MODE: false
+        - CMD: "show version | inc Cisco IOS XE Software"
+          CMD-OUTPUT-DESCRIPTION: sh_ver
+          SAVE-CMD-OUTPUT-TO-FILE: false
+          CONFIG-MODE: false
+    CMDSET2: # saving result of command in enable mode in to the file
+        - CMD: "show run"
+          CMD-OUTPUT-DESCRIPTION: sh_run
+          SAVE-CMD-OUTPUT-TO-FILE: true
+          CONFIG-MODE: false
+    CMDSET3: #configuring the device, and verifying configuration
+        - CMD: "logging monitor debuging"
+          CMD-OUTPUT-DESCRIPTION: logging_monitor
+          SAVE-CMD-OUTPUT-TO-FILE: false
+          CONFIG-MODE: true
+          SAVE-CONF: true
+        - CMD: "show run | inc logging monitor"
+          CMD-OUTPUT-DESCRIPTION: sh_run_inc_monitor
+          SAVE-CMD-OUTPUT-TO-FILE: false
+          CONFIG-MODE: false
+    CMDSET4: #configuring the device in multi-line, saving and verifying configuration
+        - CMD: ['vlan 8', 'name test', 'interface Port-channel99', 'switchport trunk allowed vlan 8,101,999']
+          CMD-OUTPUT-DESCRIPTION: conf_vlan_Po99
+          SAVE-CMD-OUTPUT-TO-FILE: false          
+          CONFIG-MODE: true
+          SAVE-CONF: true
+        - CMD: "show run interface Po99 | inc allowed"
+          CMD-OUTPUT-DESCRIPTION: sh_Po99
+          SAVE-CMD-OUTPUT-TO-FILE: false
+          CONFIG-MODE: false
+          
+TASKS:
+    - DEVGROUP: TEST
+      CMDSET: CMDSET4
+   # - DEVGROUP: SWC
+   #   CMDSET: CMDSET3
