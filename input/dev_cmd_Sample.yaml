@@ -51,6 +51,6 @@ CMDS:
           
 TASKS:
     - DEVGROUP: TEST
-      CMDSET: CMDSET4
+      CMDSET: CMDSET2
    # - DEVGROUP: SWC
    #   CMDSET: CMDSET3

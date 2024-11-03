@@ -1,7 +1,7 @@
 # CiscoIOS-Automation
-get-csv-dev-cmd-to-txt.py  script executes the same list of commands on many devices and allow filter results by words (eg.: Temperature, MAC, SN). The script read list of cmd and list of devices from csv file.
+1. get-csv-dev-cmd-to-txt.py  script executes the same list of commands on many devices and allow filter results by words (eg.: Temperature, MAC, SN). The script read list of cmd and list of devices from csv file.
 
-bulk-yaml-dev-cmd-to-txt.py the script executes a list of commands (in enable or config mode) on a group of devices. The script read list of cmd and devices from yaml file . 
+2. get-yaml-dev-cmd-to-txt.py the script executes a list of commands (in enable or config mode) on a group of devices. The script read list of cmd and devices from yaml file . 
 
 # Finding a device manufacturer by MAC address vendor
 get-MAC-vendor.py - scripts script creates new tab MAC_vendor in Excel with sheet name 'mac' and columne name 'mac_address'.
